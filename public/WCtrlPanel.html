@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebRTC Control Panel</title>
+</head>
+<body>
+<!-- 4:3 aspect ratio resolutions: -->
+<!-- 160x120, 320x240, 640x480, 800x600, 960x720, 1024x768, 1280x960, 1400x1050, 1440x1080 , 1600x1200, 1856x1392, 1920x1440, 2048x1536 -->
+<!-- 6:9 aspect ratio resolutions:  -->
+<!-- 160x90, 320x180, 640x360, 1024x576, 1152x648, 1280x720, 1366x768, 1600x900, 1920x1080, 2560x1440, 3840x2160 -->
+<div id="webrtc_ctrl_panel" class="hiddenPanel">
+  <div class="section">
+    <label for="std_resolutions_4x3">16x9 resolutions</label>
+    <select id="std_resolutions_16x9" class="std_resolutions_selector">
+      <option value="80x45">80x45</option>
+      <option value="160x90">160x90</option>
+      <option value="320x180">320x180</option>
+      <option value="640x360">640x360</option>
+      <option value="1024x576">1024x576</option>
+      <option value="1152x648">1152x648</option>
+      <option value="1280x720">1280x720</option>
+      <option value="1366x768">1366x768</option>
+      <option value="1600x900">1600x900</option>
+      <option value="1920x1080">1920x1080</option>
+      <option value="2560x1440">2560x1440</option>
+      <option value="3840x2160">3840x2160</option>
+      <option value="unlocked" selected>unlocked</option>
+    </select>
+  </div>
+  <div class="section">
+    <label for="std_resolutions_4x3">4x3 resolutions</label>
+    <select id="std_resolutions_4x3" class="std_resolutions_selector">
+      <option value="none" selected></option>
+      <option value="80x60">80x60</option>
+      <option value="160x120">160x120</option>
+      <option value="320x240">320x240</option>
+      <option value="640x480">640x480</option>
+      <option value="800x600">800x600</option>
+      <option value="960x720">960x720</option>
+      <option value="1024x768">1024x768</option>
+      <option value="1280x960">1280x960</option>
+      <option value="1400x1050">1400x1050</option>
+      <option value="1440x1080">1440x1080</option>
+      <option value="1600x1200">1600x1200</option>
+      <option value="1856x1392">1856x1392</option>
+      <option value="1920x1440">1920x1440</option>
+      <option value="2048x1536">2048x1536</option>
+      <option value="unlocked">unlocked</option>
+    </select>
+  </div>
+  <div id="webrtc_ctrl_panel_close">×</div>
+</div>
+</body>
+</html>
