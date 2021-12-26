@@ -1,0 +1,452 @@
+* {
+	margin:       0;
+	padding:      0;
+}
+html, body {
+	width:        100%;
+	height:       100%;
+	font-family: 'robotolight', 'Open Sans', 'Helvetica', 'Arial', sans-serif;
+}
+
+.renderer-group {
+	display:            grid;
+	position:           absolute;
+	height:             calc(100% - 60px);
+	top:                0px;
+	left:               350px;
+	right:              0px;
+	transition:         left 0.3s ease-in;
+	-moz-transition:    left 0.3s ease-in;
+	-webkit-transition: left 0.3s ease-in;
+}
+
+body.in-call .renderer-group {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+body.options-hidden .renderer-group  {
+	left:             0px;
+}
+
+#renderer0 {
+	background-color: darkgray;
+}
+#renderer1 {
+	background-color: gray;
+}
+#renderer2 {
+	background-color: darkgray;
+}
+#renderer3 {
+	background-color: gray;
+}
+#renderer4 {
+	background-color: darkgray;
+}
+#renderer5 {
+	background-color: gray;
+}
+
+#helper {
+	position:     absolute;
+	top:          0px;
+	left:         0px;
+	width:        100%;
+	height:       100%;
+	background:   white;
+	color:        #5d5d5d;
+	font-weight:  300;
+	z-index:      999;
+}
+#helper table {
+	max-width: 1200px;
+	height: 100%;
+	margin: auto;
+}
+#helper td {
+	vertical-align: middle;
+	text-align:     center;
+	width:          800px;
+	padding:        10px;
+}
+#helper img {
+	vertical-align: middle;
+}
+.helperCheck {
+	vertical-align: middle;
+	text-align:		left;
+	padding: 		10px;
+}
+.helperHeader, .helperFooter {
+	padding:        30px 0px;
+}
+#helperText {
+	font-size:  36px;
+}
+#helperText p {
+	font-size:  16px;
+}
+
+.helperFooter a {
+	font-size: 18px;
+	text-align: center;
+	text-decoration: none;
+	background-color: #83C36D;
+	display: inline-block;
+	padding: 14px 0px 14px 0px;
+	color: white;
+	font-weight: normal;
+	width: 200px;
+	margin: auto;
+	border-radius: 5px;
+}
+#helper ul {
+	display:         inline-block;
+	list-style-type: none;
+}
+
+.toolbar {
+	position:          absolute;
+	bottom:            0px;
+	height:            60px;
+	text-align:        center;
+	background-color:  rgb(19, 38, 58);
+}
+
+#toolbarLeft {
+	left:               0%;
+	right:             70%;
+	width:             30%;
+}
+#toolbarCenter {
+	left:              30%;
+	right:             30%;
+	width:             40%;
+	display:           flex;
+	justify-content:   center;
+}
+#toolbarRight {
+	left:              70%;
+	right:              0%;
+	width:             30%;
+}
+.hidden {
+	display:      none;
+}
+.hiddenPermanent {
+	display:      none;
+}
+#error {
+	color:        red;
+	font-size:    50%;
+}
+#message {
+	font-size:    50%;
+}
+#participantStatus {
+	color:        white;
+	line-height:  60px;
+	margin:       0px 10px;
+	position:     absolute;
+	left:         0px;
+}
+#connectionStatus {
+	color:        white;
+	line-height:  50px;
+	margin:       0px 10px;
+	position:     absolute;
+	right:        0px;
+	bottom:       10px;
+}
+#clientVersion {
+	color:        white;
+	line-height:  10px;
+	margin:       0px 10px;
+	position:     absolute;
+	right:        0px;
+	bottom:       3px;
+	font-size:    75%;
+}
+
+#options {
+	position:           absolute;
+	top:                0px;
+	left:               0px;
+	bottom:             60px;
+	width:              350px;
+	text-align:         center;
+	white-space:        nowrap;
+	transition:         transform 0.3s ease-in;
+	-moz-transition:    transform 0.3s ease-in;
+	-webkit-transition: transform 0.3s ease-in;
+	z-index:            99;
+}
+#options .options-header {
+	width:        100%;
+	height:       32px;
+}
+#options .options-content {
+	height:       calc(100% - 32px);
+	overflow-y:   auto;
+}
+#options #advancedSettings {
+	width:        80%;
+	margin:       2em auto 2em auto;
+	padding:      .5em 1em 1em 0;
+}
+#options #advancedSettings p {
+	text-align:   right;
+}
+#options #advancedSettings input,
+#options #advancedSettings label {
+	width:        auto;
+}
+#options #advancedSettings input {
+	max-width:    50%;
+}
+#options #advancedSettings input[type='number'] {
+	width:        4em;
+}
+#options form  { }
+#options p     { text-align: left; }
+#options label { display: inline-block; width:105px; margin: 5px; padding: 4px; text-align: right; }
+#options input { display: inline-block; width:183px; margin: 5px; padding: 4px; }
+#options select{ display: inline-block; width:195px; margin: 5px; padding: 4px; }
+
+body.options-hidden	#options {
+	transform:    translateX(-100%);
+}
+
+.options-visibiliy-button {
+	background-image:    url(Images/hideOptions.png);
+	background-repeat:   no-repeat;
+	background-position: center;
+	background-size:     18px auto;
+	background-color:    white;
+	position:            absolute;
+	outline:             none;
+	border:              none;
+	height:              32px;
+	width:               32px;
+	right:               0px;
+}
+
+body.options-hidden .options-visibiliy-button {
+	background-image:    url(Images/showOptions.png);
+	background-size:     30px auto;
+	transform:           translateX(100%);
+}
+
+#monitorSharesSafari button,
+#windowSharesSafari button {
+	margin:      5px;
+	padding:     3px;
+}
+
+.logo {
+	width:       300px;
+}
+.toolbarButton        {
+	width:               100px;
+	height:              60px;
+	background-size:     32px auto;
+	background-repeat:   no-repeat;
+	background-position: center;
+	background-color:    rgb(19, 38, 58);
+	border:              0;
+}
+
+.cameraOn      { background-image: url(Images/cameraOn.png); }
+.cameraOff     { background-image: url(Images/cameraOff.png); }
+.microphoneOn  { background-image: url(Images/microphoneOn.png); }
+.microphoneOff { background-image: url(Images/microphoneOff.png); }
+.speakerOn     { background-image: url(Images/speakerOn.png); }
+.speakerOff    { background-image: url(Images/speakerOff.png); }
+.callStart     { background-image: url(Images/callStart.png); }
+.callEnd       { background-image: url(Images/callEnd.png); }
+
+/* Renderer Layout CSS */
+.pluginOverlay .videoContainer .frame video {
+	background-image: url(Images/default_profile.svg);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 33%;
+}
+
+.pluginOverlay {
+	display: inline-grid;
+}
+
+.pluginOverlay > * {
+	transition: all 0.5s;
+}
+
+.pluginOverlay.zoomed-in > * {
+	position: absolute;
+	width: auto;
+	height: auto;
+	top: 18px;
+	left: 18px;
+	right: 18px;
+	bottom: 18px;
+	z-index: 999;
+}
+
+body:not(.in-call) .pluginOverlay:not(#renderer0) {
+	display: none;
+}
+
+.apiLogger {
+	position: relative;
+	margin-left: 5%;
+}
+.apiLogger li:hover       { background-color: rgb(195, 200, 209); }
+.apiLogger ul li:hover    { background-color: rgb(233, 233, 233); }
+.apiLogger, .apiLogger ul { list-style-type: none; }
+.apiLogger ul {
+	display: 						none;
+	background-color: white;
+	position: 					absolute;
+}
+.apiLogger li:hover ul {
+	display:		block;
+	box-shadow:	inset 0px 0px 1px 1px rgb(233, 233, 233);
+}
+.apiLogger li div {
+	display:		block;
+	padding:		6px;
+	text-align:	right;
+}
+.apiLogger li div:after {
+	content:		"▼";
+	color:			rgb(200, 200, 200);
+	margin:			0px -2px 0px 15px;
+}
+
+/* The Modal (background) */
+#log-popup {
+	display: none; /* Hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 999;
+	padding-top: 100px; /* Location of the box */
+	left: 0;
+	top: 0;
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgb(0,0,0); /* Fallback color */
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.popup-content {
+	display: table;
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 50%;
+}
+
+/* The Close Button */
+.close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+#log-table th {
+	padding: 15px 0 15px 0;
+}
+#log-table {
+	margin:0 auto;
+}
+#log-table td {
+	padding: 15px;
+}
+
+#log-table tr>td:first-child {
+	font-weight: bold;
+}
+#showLogs {
+	cursor: pointer;
+	padding-right: 5px;
+	text-align: right;
+}
+#showLogs:after {
+	content: "\2630";
+	margin-left: 15px;
+}
+.container {
+	position: relative;
+	padding-left: 35px;
+	cursor: pointer;
+	font-size: 22px;
+	user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 25px;
+	width: 25px;
+	background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+	background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+	background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+	display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+	left: 9px;
+	top: 5px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+th {
+	text-transform: capitalize;
+}
+th:first-child {
+	text-align: left;
+	padding-left: 15px !important;
+}

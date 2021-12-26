@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>VidyoConnectorCustomLayout</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+		integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
+		integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script>if (window.module) module = window.module;</script>
+
+	<!-- We've provide some simple styling to get you started. -->
+	<link href="VidyoConnectorCustomLayout.css" rel="stylesheet" type="text/css">
+	<link href="wl.css" rel="stylesheet" type="text/css">
+
+
+	<!-- Here we load the application which knows how to
+	invoke the VidyoConnector API. -->
+	<script src="wl.js"></script>
+	<script type="text/javascript">
+		function onVidyoClientLoaded(status) {
+			console.log("Status: " + status.state + "Description: " + status.description);
+			switch (status.state) {
+				case "READY":    // The library is operating normally
+					$("#connectionStatus").html("Ready to Connect");
+					$("#helper").addClass("hidden");
+					// After the VidyoClient is successfully initialized a global VC object will become available
+					// All of the VidyoConnector gui and logic is implemented in VidyoConnectorCustomLayout.js
+					window.VC = new window.VidyoClientLib.VidyoClient('', () => {
+						// After the VidyoClient is successfully initialized a global VC object will become available
+						// All of the VidyoConnector gui and logic is implemented in VidyoConnector.js
+						StartVidyoConnector(VC, window.VCUtils ? window.VCUtils.params.webrtc : 'true');
+					});
+					break;
+				case "RETRYING": // The library operating is temporarily paused
+					$("#connectionStatus").html("Temporarily unavailable retrying in " + status.nextTimeout / 1000 + " seconds");
+					break;
+				case "FAILED":   // The library operating has stopped
+					ShowFailed(status);
+					$("#connectionStatus").html("Failed: " + status.description);
+					break;
+				case "FAILEDVERSION":   // The library operating has stopped
+					UpdateHelperPaths(status);
+					ShowFailedVersion(status);
+					$("#connectionStatus").html("Failed: " + status.description);
+					break;
+				case "NOTAVAILABLE": // The library is not available
+					UpdateHelperPaths(status);
+					$("#connectionStatus").html(status.description);
+					break;
+			}
+			return true; // Return true to reload the plugins if not available
+		}
+		function UpdateHelperPaths(status) {
+			$("#helperPlugInDownload").attr("href", status.downloadPathPlugIn);
+			$("#helperAppDownload").attr("href", status.downloadPathApp);
+		}
+		function ShowFailed(status) {
+			var helperText = '';
+			// Display the error
+			helperText += '<h2>An error occurred, please reload</h2>';
+			helperText += '<p>' + status.description + '</p>';
+
+			$("#helperText").html(helperText);
+			$("#failedText").html(helperText);
+			$("#failed").removeClass("hidden");
+		}
+		function ShowFailedVersion(status) {
+			var helperText = '';
+			// Display the error
+			helperText += '<h4>Please Download a new plugIn and restart the browser</h4>';
+			helperText += '<p>' + status.description + '</p>';
+
+			$("#helperText").html(helperText);
+		}
+
+		function loadVidyoClientLibrary(webrtc, plugin) {
+			// If webrtc, then set webrtcLogLevel
+			var webrtcLogLevel = "";
+			if (webrtc) {
+				// Set the WebRTC log level to either: 'info' (default), 'error', or 'none'
+				webrtcLogLevel = '&webrtcLogLevel=info';
+			}
+
+			//We need to ensure we're loading the VidyoClient library and listening for the callback.
+			var script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.src = 'https://static.vidyo.io/4.1.15.7/javascript/VidyoClient/VidyoClient.js?onload=onVidyoClientLoaded&webrtc=' + webrtc + '&plugin=' + plugin + webrtcLogLevel;
+			document.getElementsByTagName('head')[0].appendChild(script);
+		}
+
+		function loadNativeXmppWebRTCVidyoClientLibrary() {
+			// Assumes that this file is hosted in the Hookflash build environment
+			// TODO: update path
+			var script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.src = '../latest_build/VidyoClient.js';
+			script.onload = function () {
+				onVidyoClientLoaded({ state: 'READY', description: 'Native XMPP + WebRTC' });
+			};
+			document.getElementsByTagName('head')[0].appendChild(script);
+			var style = document.createElement('link');
+			style.rel = 'stylesheet';
+			style.type = 'text/css';
+			style.href = '../latest_build/VidyoClient.css';
+			document.getElementsByTagName('head')[0].appendChild(style);
+		}
+
+		function joinViaBrowser() {
+			$("#helperText").html("Loading...");
+			$("#helperPicker").addClass("hidden");
+			loadVidyoClientLibrary(true, false);
+		}
+
+		function joinViaPlugIn() {
+			$("#helperText").html("Don't have the PlugIn?");
+			$("#helperPicker").addClass("hidden");
+			$("#helperPlugIn").removeClass("hidden");
+			loadVidyoClientLibrary(false, true);
+		}
+
+		function joinViaElectron() {
+			$("#helperText").html("Electron...");
+			$("#helperPicker").addClass("hidden");
+			loadVidyoClientLibrary(false, true);
+		}
+
+		function joinViaApp() {
+			$("#helperText").html("Don't have the app?");
+			$("#helperPicker").addClass("hidden");
+			$("#helperApp").removeClass("hidden");
+			var protocolHandlerLink = 'vidyoconnector://' + window.location.search;
+			/* launch */
+			$("#helperAppLoader").attr('src', protocolHandlerLink);
+			loadVidyoClientLibrary(false, false);
+		}
+
+		function joinViaOtherApp() {
+			$("#helperText").html("Don't have the app?");
+			$("#helperPicker").addClass("hidden");
+			$("#helperOtherApp").removeClass("hidden");
+			var protocolHandlerLink = 'vidyoconnector://' + window.location.search;
+			/* launch */
+			$("#helperOtherAppLoader").attr('src', protocolHandlerLink);
+			loadVidyoClientLibrary(false, false);
+		}
+
+		function joinViaNativeXmppWebRTCApp() {
+			//loadNativeXmppWebRTCVidyoClientLibrary();
+			$("#helper").addClass("hidden");
+		}
+
+		function loadHelperOptions() {
+			var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+			// Opera 8.0+
+			var isOpera = (userAgent.indexOf("Opera") || userAgent.indexOf('OPR')) != -1;
+			// Firefox
+			var isFirefox = userAgent.indexOf("Firefox") != -1;
+			// Chrome 1+
+			var isChrome = userAgent.indexOf("Chrome") != -1;
+			// Safari
+			var isSafari = !isChrome && userAgent.indexOf("Safari") != -1;
+			// AppleWebKit
+			var isAppleWebKit = !isSafari && !isChrome && userAgent.indexOf("AppleWebKit") != -1;
+			// Internet Explorer 6-11
+			var isIE = (userAgent.indexOf("MSIE") != -1) || (!!document.documentMode == true);
+			// Edge 20+
+			var isEdge = !isIE && !!window.StyleMedia;
+			// Check if Mac
+			var isMac = navigator.platform.indexOf('Mac') > -1;
+			// Check if Windows
+			var isWin = navigator.platform.indexOf('Win') > -1;
+			// Check if Linux
+			var isLinux = navigator.platform.indexOf('Linux') > -1;
+			// Check if Android
+			var isAndroid = userAgent.indexOf("android") > -1;
+
+			if (!isMac && !isWin && !isLinux) {
+				/* Mobile App*/
+				if (isAndroid) {
+					$("#joinViaApp").removeClass("hidden");
+				} else {
+					$("#joinViaOtherApp").removeClass("hidden");
+				}
+				if (isChrome || isSafari) {
+					/* Supports WebRTC */
+					$("#joinViaBrowser").removeClass("hidden");
+					$("#joinViaBrowserNativeXmppWebRTC").removeClass("hidden");
+				}
+			} else {
+				/* Desktop App */
+				$("#joinViaApp").removeClass("hidden");
+
+				if (isChrome || isFirefox) {
+					/* Supports WebRTC */
+					$("#joinViaBrowser").removeClass("hidden");
+				}
+
+				if (isChrome || isSafari || isFirefox) {
+					$("#joinViaBrowserNativeXmppWebRTC").removeClass("hidden");
+				}
+
+				if (isSafari || isFirefox || (isAppleWebKit && isMac) || (isIE && !isEdge)) {
+					/* Supports Plugins */
+					$("#joinViaPlugIn").removeClass("hidden");
+				}
+			}
+
+			if (isSafari) {
+				$("#enableUnifiedPlanCbx").addClass('hidden');
+				$("#windowSharesContainer").addClass('hidden');
+				$("#monitorSharesContainer").addClass('hidden');
+			} else {
+				$("#windowSharesSafari").addClass('hidden');
+				$("#monitorSharesSafari").addClass('hidden');
+			}
+		}
+		// Runs when the page loads
+		$(function () {
+			var connectorType = getUrlParameterByName("connectorType");
+			var isElectron = (typeof process === 'object') && process.versions && (process.versions.electron !== undefined);
+
+			if (connectorType == "app") {
+				joinViaApp();
+			} else if (connectorType == "browser") {
+				joinViaBrowser();
+			} else if (connectorType == "plugin") {
+				joinViaPlugIn();
+			} else if (connectorType == "other") {
+				joinViaOtherApp();
+			} else {
+				if (isElectron) {
+					joinViaElectron();
+				} else {
+					loadHelperOptions();
+				}
+			}
+		});
+	</script>
+</head>
+
+<!-- We execute the VidyoConnectorApp library on page load
+to hook up all of the events to elements. -->
+
+<body id="vidyoConnector">
+	<div id="options">
+		<div class="options-content">
+			<p>
+				<!-- On page load, this input is filled with a list of all the available microphones on the user's system. -->
+				<label for="speakers">Speaker</label>
+				<select id="speakers">
+					<option value='0'>None</option>
+				</select>
+			</p>
+			<div id="hosts" class="btn-group"></div>
+		</div>
+	</div>
+	<section id="renderer-group" class="renderer-group">
+		<!-- This is the div into which the Vidyo component will be inserted. -->
+		<div id="renderer0" class="pluginOverlay"></div>
+		<div id="renderer1" class="pluginOverlay"></div>
+	</section>
+</body>
+
+</html>

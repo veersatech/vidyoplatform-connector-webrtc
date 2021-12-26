@@ -1,19 +1,20 @@
-# VidyoPlatform Connector native WebRTC
+# Introduction 
+TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
 
-Current version: 21.3.0.0034
+# Getting Started
+TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
+1.	Installation process
+2.	Software dependencies
+3.	Latest releases
+4.	API references
 
-Host: https://vidyoplatform-webrtc.web.app
+# Build and Test
+TODO: Describe and show how to build your code and run the tests. 
 
-## Update Flow:
+# Contribute
+TODO: Explain how other users and developers can contribute to make your code better. 
 
-1. Grab latest version from build runner: https://vidyo-bamboo.edge.local/browse/NWEBRTC. Find it under "Artifacts". Example: VidyoClient-NWebRTCH-21.3.0.0034.zip. 
-2. Unzip and copy **content** of "VidyoClient-NWebRTCH-21.3.0.0034/hunter" folder to "vidyoplatform-connector-webrtc/public" folder. Here we copy the sample stuff.
-3. Now replace folder "VidyoClient-NWebRTCH-21.3.0.0034/latest_build" inside "VidyoClient-NWebRTCH-21.3.0.0034/public". That will update the library.
-4. Commit and push the changes.
-
-Sample is hosted at:
-https://vidyoplatform-webrtc.web.app
-via Firebase hosting.
-
-They will apply automatically with Github deploy job listed here:
-https://github.com/tmelko-vidyo/vidyoplatform-connector-webrtc/actions
+If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
+- [ASP.NET Core](https://github.com/aspnet/Home)
+- [Visual Studio Code](https://github.com/Microsoft/vscode)
+- [Chakra Core](https://github.com/Microsoft/ChakraCore)

@@ -1,0 +1,59 @@
+body {
+  --max-z-index: 2147483647;
+  --close-bg-color: salmon;
+}
+#webrtc_ctrl_panel {
+  position: absolute;
+  width: 90%;
+  height: 3.5em;
+  left: 5%;
+  top: 0;
+  z-index: calc(var(--max-z-index) - 1);
+  text-align: center;
+  background: lightgray;
+  border-radius: 2px;
+  opacity: 0.7;
+  overflow: hidden;
+}
+#webrtc_ctrl_panel .section {
+  display: inline-block;
+  background: lightgray;
+  width: 20%;
+  height: 3em;
+  text-align: center;
+  vertical-align: top;
+}
+#webrtc_ctrl_panel .section label {
+  margin: 1px;
+}
+#webrtc_ctrl_panel .section select {
+  margin: 1px;
+}
+#webrtc_ctrl_panel #webrtc_ctrl_panel_close {
+  display: inline-block;
+  position: absolute;
+  width: 1em;
+  height: 100%;
+  right: 0;
+  top: 0;
+  background: var(--close-bg-color);
+  border-radius: 2px;
+  z-index: var(--max-z-index);
+  text-align: center;
+}
+#webrtc_ctrl_panel #webrtc_ctrl_panel_close:hover {
+  cursor: pointer;
+  background: red;
+}
+#webrtc_ctrl_panel.hiddenPanel {
+  width: 1em;
+  height: 1em;
+  left: auto;
+  bottom: auto;
+  right: 0;
+  top: 0;
+}
+#webrtc_ctrl_panel.hiddenPanel #webrtc_ctrl_panel_close {
+  background-color: #00b0e8;
+}
+/*# sourceMappingURL=WCtrlPanel.css.map */
